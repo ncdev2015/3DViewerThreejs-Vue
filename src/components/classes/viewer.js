@@ -12,7 +12,6 @@ export default class Viewer {
         this.controls = new OrbitControls( this.camera, this.renderer.domElement );
 
         this.renderer.setSize( width, height );
-        document.body.appendChild(this.renderer.domElement);
         
         // Adding elements to scene
         const cube = this.createCube(true);
