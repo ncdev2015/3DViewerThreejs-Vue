@@ -2,7 +2,7 @@
 
 A basic configuration for creating of 3D projects with Vue.js and Three.js:
 
-![3D Viewer](https://github.com/ncdev2015/3DViewerThreejs-Vue/blob/master/assets/example.png)
+![3D Viewer](https://github.com/ncdev2015/3DViewerThreejs-Vue/blob/master/assets/example2.png)
 
 ## Project setup
 
