@@ -1,62 +1,59 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import Stats from 'three/examples/jsm/libs/stats.module'
 
 export default class Viewer {
     constructor(width, height) {
-        this.offsetX = window.innerWidth - width;
+        this.width = width;
+        this.height = height;
 
         this.scene = new THREE.Scene();
-        this.camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+        this.camera = new THREE.PerspectiveCamera(75, this.width / this.height, 0.1, 1000);
         this.renderer = new THREE.WebGLRenderer();
+        this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+        this.grid = new THREE.GridHelper(1000, 1000);
+        this.stats = new Stats();
 
-        this.controls = new OrbitControls( this.camera, this.renderer.domElement );
+        this.renderer.setSize(this.width, this.height);
+        this.cube = this.createCube(true);
 
-        this.renderer.setSize( width, height );
+        this.camera.position.set(1,3,4);
         
-        // Adding elements to scene
-        const cube = this.createCube(true);
-        cube.name = "cube";
-        this.scene.add(cube);
+        this.scene.add(this.grid)
+        this.scene.add(this.cube);
 
-        this.camera.position.z = 5;
+        document.body.appendChild(this.stats.dom);
 
         this.animate();
 
-        const onWindowResize = () => {
+        window.addEventListener('resize', () => {
             this.onWindowResize();
-        }
-
-        window.addEventListener( 'resize', onWindowResize, false );
+        });
     }
 
     onWindowResize() {
-        this.camera.aspect = (window.innerWidth - this.offsetX) / window.innerHeight;
-        this.camera.updateProjectionMatrix();
-        this.renderer.setSize(window.innerWidth - this.offsetX, window.innerHeight);
-    }
+        this.width = window.innerWidth;
+        this.height = window.innerHeight;
 
-    animateCube(cube) {
-        cube.rotation.x += 0.01;
-        cube.rotation.y += 0.01;
+        this.camera.aspect = window.innerWidth / window.innerHeight;
+        this.camera.updateProjectionMatrix();
+        this.renderer.setSize(window.innerWidth, window.innerHeight);
     }
 
     animate() {
         const render = () => {
             requestAnimationFrame(render);
+
             this.controls.update();
-
-            // animating elements of scene
-            this.animateCube(this.scene.getObjectByName("cube"));
-
             this.renderer.render(this.scene, this.camera);
+            this.stats.update();
         }
-
-        render();
-    }
+        render();        
+    }    
 
     createCube(wireframe) {
         const geometry = new THREE.BoxGeometry();
-        const material = new THREE.MeshBasicMaterial( { color: 0x00ff00, wireframe: wireframe } );    
+        const material = new THREE.MeshBasicMaterial( { color: 0x00ff00, wireframe: wireframe } );
         
         return new THREE.Mesh(geometry, material);
     }

@@ -1,5 +1,4 @@
-<template>
-  <h1>3D Viewer with Vue.js and Three.js</h1>
+<template>  
   <Viewer/>
 </template>
 

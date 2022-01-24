@@ -1,32 +1,28 @@
-<template>
-  <!-- Necessary for use as root node in Three.js appendChild function  -->
+<template>  
   <div id="viewer"></div>
 </template>
 
 <script>
-import ViewerJS from './classes/viewer.js'
+import Viewer from './classes/viewer.js'
 
 export default {
   name: 'Viewer',
   componentes: {
-    ViewerJS
   },
   data() {
-    return {
-      width: 100,
-      height: 100,
+    return {      
       viewer: null
     }
   },
   mounted() {
-    this.initializeViewer();
-    this.addViewer();
+    this.initViewer();
+    this.appendViewer();
   },
   methods: {
-    initializeViewer() {
-      this.viewer = new ViewerJS(window.innerWidth-30, window.innerHeight);
+    initViewer() {
+      this.viewer = new Viewer(window.innerWidth, window.innerHeight);
     },
-    addViewer() {
+    appendViewer() {
       document.getElementById("viewer").appendChild(this.viewer.renderer.domElement);
     }
   },  
